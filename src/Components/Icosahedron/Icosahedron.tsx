@@ -55,9 +55,10 @@ const Icosahedron = () => {
   useFrame((state) => {
     if (analyser.current) {
       const data = analyser.current.getAverageFrequency();
+
       t.setRGB(0.5, data / 100, 0.5);
       if (i < 10) {
-        console.log(data);
+        console.log(data, analyser.current.data);
         i++;
         console.log(t);
       }

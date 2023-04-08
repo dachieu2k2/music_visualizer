@@ -9,6 +9,7 @@ import Geometries from "./Components/Refraction/Mesh";
 import { BackSide, Color } from "three";
 import BigSphere from "./Components/BigSphere/BigSphere";
 import Icosahedron from "./Components/Icosahedron/Icosahedron";
+import MeshLine from "./Components/MeshLine";
 
 const config = {
   backgroundColor: new Color("#0d021f"),
@@ -33,7 +34,8 @@ function App() {
       {/* <directionalLight color={"white"} position={[1, 1, 1]} />
        */}
       <group>
-        <Icosahedron />
+        {/* <Icosahedron /> */}
+        <MeshLine />
         {/* <mesh>
           <sphereGeometry args={[6.5, 120, 60]} />
           <shaderMaterial
