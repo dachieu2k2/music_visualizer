@@ -31,27 +31,27 @@ const BigSphere = () => {
 
   // debug
 
-  const {
-    wireframe,
-    doubleSide,
-    color,
-    width,
-    height,
-    widthSegments,
-    heightSegements,
-  } = useControls(
-    "BigSphere",
-    {
-      color: "white",
-      width: 1,
-      height: 1,
-      widthSegments: { value: 32, min: 0, max: 64, step: 8 },
-      heightSegements: { value: 32, min: 0, max: 64, step: 8 },
-      wireframe: true,
-      doubleSide: false,
-    },
-    { collapsed: true }
-  );
+  // const {
+  //   wireframe,
+  //   doubleSide,
+  //   color,
+  //   width,
+  //   height,
+  //   widthSegments,
+  //   heightSegements,
+  // } = useControls(
+  //   "BigSphere",
+  //   {
+  //     color: "white",
+  //     width: 1,
+  //     height: 1,
+  //     widthSegments: { value: 32, min: 0, max: 64, step: 8 },
+  //     heightSegements: { value: 32, min: 0, max: 64, step: 8 },
+  //     wireframe: true,
+  //     doubleSide: false,
+  //   },
+  //   { collapsed: true }
+  // );
 
   useFrame(({ clock }) => {
     (mesh.current?.material as ShaderMaterial).uniforms.uTime.value =
@@ -65,8 +65,8 @@ const BigSphere = () => {
         uniforms={uniforms}
         vertexShader={vertexShader}
         fragmentShader={fragmentShader}
-        wireframe={wireframe}
-        side={doubleSide ? DoubleSide : undefined}
+        wireframe={true}
+        side={DoubleSide}
         transparent={true}
         // opacity={0.1}
       />

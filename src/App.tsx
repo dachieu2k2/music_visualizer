@@ -52,8 +52,9 @@ function App() {
         children="@github"
       />
       <Canvas camera={{ fov: 75 }}>
+        <color attach={"background"} args={["#0d021f"]} />
         <Suspense fallback={null}>
-          <color attach={"background"} args={["#0d021f"]} />
+          {/* <Vignette eskil={false} offset={0.1} darkness={1.1} /> */}
           {/* <directionalLight color={"white"} position={[1, 1, 1]} />
            */}
           <group>
@@ -66,6 +67,14 @@ function App() {
           <perspectiveCamera />
           {/* {orbitcontrols && <OrbitControls />}
           {axesHelper && <axesHelper />} */}
+          {/* <EffectComposer>
+            <Bloom
+              luminanceThreshold={0 as any}
+              luminanceSmoothing={0.9 as any}
+              height={300 as any}
+              opacity={3}
+            />
+          </EffectComposer> */}
         </Suspense>
       </Canvas>
     </main>
