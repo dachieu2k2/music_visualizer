@@ -1,8 +1,8 @@
 import { useState, lazy, Suspense } from "react";
 import "./App.css";
 import { Canvas } from "@react-three/fiber";
-import { Environment, OrbitControls, Stars } from "@react-three/drei";
-import { useControls } from "leva";
+import { Environment, Html, OrbitControls, Stars } from "@react-three/drei";
+import { button, useControls } from "leva";
 import { BackSide, Color, Vector3 } from "three";
 import BigSphere from "./Components/BigSphere/BigSphere";
 // import Icosahedron from "./Components/Icosahedron/Icosahedron";
@@ -11,6 +11,7 @@ const Icosahedron = lazy(() => import("./Components/Icosahedron/Icosahedron"));
 import MeshLine from "./Components/MeshLine";
 import MeshLine2 from "./Components/MeshLine2";
 import ResponsiveCamera from "./Components/ReponsiveCamera";
+import Loading from "./Components/Loading";
 
 const config = {
   backgroundColor: new Color("#0d021f"),
@@ -25,10 +26,7 @@ const config = {
 const vec3 = new Vector3(0, 5, 0);
 
 function App() {
-  // const { orbitcontrols, axesHelper } = useControls("mainControls", {
-  //   orbitcontrols: true,
-  //   axesHelper: false,
-  // });
+  const [state, setState] = useState<boolean>(false);
   return (
     <main>
       <a
@@ -51,32 +49,31 @@ function App() {
         className="bottom-right"
         children="@github"
       />
-      <Canvas camera={{ fov: 75 }}>
-        <color attach={"background"} args={["#0d021f"]} />
-        <Suspense fallback={null}>
-          {/* <Vignette eskil={false} offset={0.1} darkness={1.1} /> */}
-          {/* <directionalLight color={"white"} position={[1, 1, 1]} />
-           */}
-          <group>
-            <Icosahedron />
-            <ResponsiveCamera />
-            {/* <MeshLine /> */}
-            {/* <MeshLine2 /> */}
-            <BigSphere />
-          </group>
-          <perspectiveCamera />
-          {/* {orbitcontrols && <OrbitControls />}
-          {axesHelper && <axesHelper />} */}
-          {/* <EffectComposer>
-            <Bloom
-              luminanceThreshold={0 as any}
-              luminanceSmoothing={0.9 as any}
-              height={300 as any}
-              opacity={3}
-            />
-          </EffectComposer> */}
-        </Suspense>
-      </Canvas>
+
+      {state ? (
+        <Canvas camera={{ fov: 75 }}>
+          <color attach={"background"} args={["#0d021f"]} />
+          <Suspense fallback={<Loading />}>
+            <group>
+              <Icosahedron />
+              <ResponsiveCamera />
+              <BigSphere />
+            </group>
+            <perspectiveCamera />
+          </Suspense>
+        </Canvas>
+      ) : (
+        <>
+          <button
+            className="button"
+            role="button"
+            onClick={() => setState(true)}
+          >
+            Let's start!
+          </button>
+        </>
+        // <button >Let's start!</button>
+      )}
     </main>
   );
 }

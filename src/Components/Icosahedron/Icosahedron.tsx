@@ -1,6 +1,6 @@
-import { Environment, PositionalAudio, Stars } from "@react-three/drei";
+import { Environment, Html, PositionalAudio, Stars } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
-import React, { Suspense, useEffect, useMemo, useRef } from "react";
+import React, { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import {
   AdditiveBlending,
   Audio,
@@ -105,57 +105,48 @@ const Icosahedron = () => {
           0.02
         );
 
-      // if (mesh.current) {
-      //   state.camera.position.x =
-      //     Math.sin(state.clock.getElapsedTime() * 0.63) * 2.7;
-      //   state.camera.position.y =
-      //     Math.sin(state.clock.getElapsedTime() * 0.84) * 2.15;
-      //   state.camera.position.z =
-      //     Math.cos(state.clock.getElapsedTime() * 0.39) * 4.5;
-      //   state.camera.lookAt(mesh.current.position);
-      //   state.camera.updateProjectionMatrix();
-      // }
-
       (mesh.current!.material as MeshBasicMaterial).needsUpdate = true;
     }
   });
 
   return (
     <>
-      <Environment preset="night" />
-      <mesh
-        ref={mesh}
-        onPointerOver={() => (hover.current = true)}
-        onPointerOut={() => (hover.current = false)}
-      >
-        <icosahedronGeometry args={[1.2, 10]} />
-        {/* <meshBasicMaterial
+      <>
+        <Environment preset="night" />
+        <mesh
+          ref={mesh}
+          onPointerOver={() => (hover.current = true)}
+          onPointerOut={() => (hover.current = false)}
+        >
+          <icosahedronGeometry args={[1.2, 10]} />
+          {/* <meshBasicMaterial
           color={0xffffff}
           wireframe={true}
           transparent={true}
           opacity={0.5}
         /> */}
 
-        <shaderMaterial
-          fragmentShader={fragmentShader}
-          vertexShader={vertexShader}
-          uniforms={uniforms}
-          // wireframe={true}
-          transparent={true}
-          opacity={0.5}
-        />
-      </mesh>
-      <points ref={pointsMesh}>
-        <icosahedronGeometry args={[1.5, 10]} />
-        <pointsMaterial
-          size={0.02}
-          blending={AdditiveBlending}
-          // depthTest={false}
-          // depthWrite={false}
-        />
-      </points>
-      <Stars count={1000} ref={starsMesh} saturation={1200} />
-      <PositionalAudio url={"/chimsau.mp3"} autoplay ref={sound} loop />
+          <shaderMaterial
+            fragmentShader={fragmentShader}
+            vertexShader={vertexShader}
+            uniforms={uniforms}
+            // wireframe={true}
+            transparent={true}
+            opacity={0.5}
+          />
+        </mesh>
+        <points ref={pointsMesh}>
+          <icosahedronGeometry args={[1.5, 10]} />
+          <pointsMaterial
+            size={0.02}
+            blending={AdditiveBlending}
+            // depthTest={false}
+            // depthWrite={false}
+          />
+        </points>
+        <Stars count={1000} ref={starsMesh} saturation={1200} />
+        <PositionalAudio url={"/chimsau.mp3"} autoplay ref={sound} loop />
+      </>
     </>
   );
 };
