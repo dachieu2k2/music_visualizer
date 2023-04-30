@@ -1,7 +1,8 @@
-import { PositionalAudio } from "@react-three/drei";
+import { Environment, PositionalAudio, Stars } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import React, { Suspense, useEffect, useMemo, useRef } from "react";
 import {
+  AdditiveBlending,
   Audio,
   AudioAnalyser,
   Camera,
@@ -10,6 +11,7 @@ import {
   Mesh,
   MeshBasicMaterial,
   PerspectiveCamera,
+  Points,
   ShaderMaterial,
   Vector3,
 } from "three";
@@ -20,10 +22,12 @@ const v = new Vector3();
 
 const Icosahedron = () => {
   const mesh = useRef<Mesh>(null);
+  const starsMesh = useRef<Mesh>(null);
+  const pointsMesh = useRef<Points>(null);
   const analyser = useRef<AudioAnalyser | null>(null);
   const hover = useRef(false);
 
-  //   useEffect(() => void (analyser.current = new AudioAnalyser(sound, 32)), []);
+  // useEffect(() => void (analyser.current = new AudioAnalyser(sound, 32)), []);
 
   //   const audio = new Audio(chimsau)
 
@@ -36,6 +40,9 @@ const Icosahedron = () => {
         value: 0.3,
       },
       u_time: {
+        value: 0.0,
+      },
+      u_musicData: {
         value: 0.0,
       },
     }),
@@ -67,7 +74,17 @@ const Icosahedron = () => {
       mesh.current!.scale.x =
         mesh.current!.scale.y =
         mesh.current!.scale.z =
-          (data / 100) * 2;
+          (data / 100) * 1.5;
+
+      pointsMesh.current!.scale.x =
+        pointsMesh.current!.scale.y =
+        pointsMesh.current!.scale.z =
+          (data / 100) * 1.5;
+
+      starsMesh.current!.scale.x =
+        starsMesh.current!.scale.y =
+        starsMesh.current!.scale.z =
+          (data / 100) * 3;
 
       // state.camera as any).fov = 25 - data.avg / 15;
       //     state.camera.updateProjectionMatrix();
@@ -77,6 +94,10 @@ const Icosahedron = () => {
 
       (mesh.current?.material as ShaderMaterial).uniforms.u_time.value =
         0.4 * state.clock.getElapsedTime();
+
+      (mesh.current?.material as ShaderMaterial).uniforms.u_musicData.value =
+        data;
+
       (mesh.current?.material as ShaderMaterial).uniforms.u_intensity.value =
         MathUtils.lerp(
           (mesh.current?.material as ShaderMaterial).uniforms.u_intensity.value,
@@ -101,7 +122,7 @@ const Icosahedron = () => {
 
   return (
     <>
-      {/* <Suspense fallback={null}> */}
+      <Environment preset="night" />
       <mesh
         ref={mesh}
         onPointerOver={() => (hover.current = true)}
@@ -123,9 +144,18 @@ const Icosahedron = () => {
           transparent={true}
           opacity={0.5}
         />
-        <PositionalAudio url={"/chimsau.mp3"} autoplay ref={sound} loop />
       </mesh>
-      {/* </Suspense> */}
+      <points ref={pointsMesh}>
+        <icosahedronGeometry args={[1.5, 10]} />
+        <pointsMaterial
+          size={0.02}
+          blending={AdditiveBlending}
+          // depthTest={false}
+          // depthWrite={false}
+        />
+      </points>
+      <Stars count={1000} ref={starsMesh} saturation={1200} />
+      <PositionalAudio url={"/chimsau.mp3"} autoplay ref={sound} loop />
     </>
   );
 };

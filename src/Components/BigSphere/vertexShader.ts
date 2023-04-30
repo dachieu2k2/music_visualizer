@@ -3,6 +3,10 @@ import { palette } from "../common/palette";
 
 export const vertexShader = `
     uniform float uTime;
+    uniform vec3 colorA;
+    uniform vec3 colorB;
+    uniform vec3 colorC;
+    uniform vec3 colorD;
 
     varying float vColorMix;
     varying vec3 vColor;
