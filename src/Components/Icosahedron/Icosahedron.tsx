@@ -45,7 +45,7 @@ const Icosahedron = () => {
     {
       lineWidth: 0.02,
       color: "#fff",
-      segments: 32,
+      segments: 640,
       height: 1,
       radius: 2,
     },
