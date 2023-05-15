@@ -24,6 +24,8 @@ import { normalizeBetween } from "../MeshLine";
 
 const t = new Color();
 const v = new Vector3();
+const segments = 640;
+const radius = 2;
 
 extendMeshLine();
 
@@ -39,18 +41,6 @@ const Icosahedron = () => {
   // useEffect(() => void (analyser.current = new AudioAnalyser(sound, 32)), []);
 
   //   const audio = new Audio(chimsau)
-
-  const { lineWidth, color, segments, height, radius } = useControls(
-    "MeshLine",
-    {
-      lineWidth: 0.02,
-      color: "#fff",
-      segments: 640,
-      height: 1,
-      radius: 2,
-    },
-    { collapsed: true }
-  );
 
   const sound = useRef<Audio<AudioNode>>(null);
   console.log(sound);
@@ -142,8 +132,6 @@ const Icosahedron = () => {
       //   lineRef.current!.scale.z =
       //     (data / 100) * 3;
 
-      //
-
       const p = [];
       for (let i = 0; i <= segments; i++) {
         // const angle = i * (360 / segments);
@@ -193,6 +181,9 @@ const Icosahedron = () => {
           (mesh.current?.material as ShaderMaterial).uniforms.u_intensity.value,
           hover.current ? 0.85 : 0.15,
           0.02
+          // normalizeBetween(dataArr[i % 15], 0.02, 0.03),
+          // normalizeBetween(dataArr[i % 16], 0.05, 0.15),
+          // 0.02
         );
 
       (mesh.current!.material as MeshBasicMaterial).needsUpdate = true;
@@ -209,30 +200,17 @@ const Icosahedron = () => {
           onPointerOut={() => (hover.current = false)}
         >
           <icosahedronGeometry args={[1.2, 10]} />
-          {/* <meshBasicMaterial
-          color={0xffffff}
-          wireframe={true}
-          transparent={true}
-          opacity={0.5}
-        /> */}
-
           <shaderMaterial
             fragmentShader={fragmentShader}
             vertexShader={vertexShader}
             uniforms={uniforms}
-            // wireframe={true}
             transparent={true}
             opacity={0.5}
           />
         </mesh>
         <points ref={pointsMesh}>
           <icosahedronGeometry args={[1.5, 10]} />
-          <pointsMaterial
-            size={0.02}
-            blending={AdditiveBlending}
-            // depthTest={false}
-            // depthWrite={false}
-          />
+          <pointsMaterial size={0.02} blending={AdditiveBlending} />
         </points>
         <Stars count={1000} ref={starsMesh} saturation={1200} />
 
@@ -245,17 +223,13 @@ const Icosahedron = () => {
               itemSize={3}
             />
           </bufferGeometry>
-          <pointsMaterial size={0.08} blending={AdditiveBlending} />
-        </points>
-
-        {/* <mesh rotation={[0, 0, Math.PI / 2]}>
-          <meshLineGeometry ref={lineRef} points={points.p} />
-          <meshLineMaterial
-            lineWidth={lineWidth}
-            color={color}
-            sizeAttenuation={0.2}
+          <pointsMaterial
+            size={0.08}
+            blending={AdditiveBlending}
+            depthWrite={true}
+            depthTest={true}
           />
-        </mesh> */}
+        </points>
 
         <PositionalAudio url={"/chimsau.mp3"} autoplay ref={sound} loop />
       </>
